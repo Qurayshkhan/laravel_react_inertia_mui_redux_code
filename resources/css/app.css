@@ -1,0 +1,17 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#app {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* .bg-green {
+    background: linear-gradient(90deg, rgba(78, 78, 246, 0.647) 0%, rgba(247, 90, 216, 0.696) 100%);
+} */
