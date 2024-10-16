@@ -8,4 +8,5 @@ export const AuthSlice = createSlice({
     reducers: AuthReducer,
 });
 export default AuthSlice.reducer;
-export const { showHidePassword, handleCheckBox } = AuthSlice.actions;
+export const { showHidePassword, handleCheckBox, handleLoading } =
+    AuthSlice.actions;

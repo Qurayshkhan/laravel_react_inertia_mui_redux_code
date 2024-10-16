@@ -5,6 +5,11 @@ const AuthReducer = {
     handleCheckBox(state) {
         state.checked = !state.checked;
     },
+    handleLoading(state, action) {
+        console.log("🚀 ~ handleLoading ~ payload:", action.payload);
+
+        state.isLoading = action.payload;
+    },
 };
 
 export default AuthReducer;

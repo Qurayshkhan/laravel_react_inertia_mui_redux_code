@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Redirect;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -13,8 +17,14 @@ class AuthenticatedSessionController extends Controller
     {
         return Inertia::render('Auth/Login');
     }
-    public function register(): Response
+
+    public function destroy(Request $request): RedirectResponse
     {
-        return Inertia::render('Auth/Register');
+        // dd($request->user());
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return Redirect::to(RouteServiceProvider::HOME);
     }
+
 }

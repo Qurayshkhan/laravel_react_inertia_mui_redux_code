@@ -14,6 +14,7 @@ import Logo from "../../Components/Logo/Logo";
 import useCustomColors from "../../hooks/useCustomColor";
 import LogoSmall from "../../Components/Logo/LogoSmall";
 import NavDrawer from "../../Components/Drawer/NavDrawer";
+import { router } from "@inertiajs/react";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -33,8 +34,16 @@ function UserLayout({ children }) {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (setting) => {
         setAnchorElUser(null);
+        console.log("🚀 ~ handleCloseUserMenu ~ setting:", setting);
+        switch (setting) {
+            case "Logout":
+                router.post("/logout");
+            default:
+                "Invalid Menu";
+        }
+        // router.post("/logout", null);
     };
 
     return (
@@ -138,12 +147,14 @@ function UserLayout({ children }) {
                                     horizontal: "right",
                                 }}
                                 open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
+                                // onClose={handleCloseUserMenu}
                             >
                                 {settings.map((setting) => (
                                     <MenuItem
                                         key={setting}
-                                        onClick={handleCloseUserMenu}
+                                        onClick={() =>
+                                            handleCloseUserMenu(setting)
+                                        }
                                     >
                                         <Typography
                                             sx={{ textAlign: "center" }}

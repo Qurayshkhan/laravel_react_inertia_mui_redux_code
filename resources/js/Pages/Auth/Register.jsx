@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Box,
     FormControl,
@@ -6,33 +6,49 @@ import {
     Grid2,
     TextField,
     Typography,
-    Button,
     InputAdornment,
     IconButton,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import useCustomColors from "../../hooks/useCustomColor";
 import AuthLayout from "../../Layouts/Auth/AuthLayout";
 import { primary } from "../../theme/theme";
-import { Link } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import useSelectorHook from "../../hooks/useSelectorHook";
 import { useDispatch } from "react-redux";
-import { showHidePassword } from "../../redux/slices/auth/AuthSlice";
+import {
+    handleLoading,
+    showHidePassword,
+} from "../../redux/slices/auth/AuthSlice";
 import { useFormik } from "formik";
 import { RegisterSchema } from "../../schemas/AuthSchema";
-function Register() {
-    const { black, greyCloud } = useCustomColors();
-    const { showPassword, registerUser } = useSelectorHook("auth");
-    const dispatch = useDispatch();
 
+function Register() {
+    const { errors: backendError } = usePage().props;
+
+    const { black, greyCloud } = useCustomColors();
+    const { showPassword, registerUser, isLoading } = useSelectorHook("auth");
+    const dispatch = useDispatch();
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
         useFormik({
             initialValues: registerUser,
             validationSchema: RegisterSchema,
             onSubmit: async (values, actions) => {
-                console.log("🚀 ~ Register ~ values:", values);
+                dispatch(handleLoading(true));
+                try {
+                    router.post("/register", values, {
+                        onFinish: () => {
+                            dispatch(handleLoading(false));
+                        },
+                    });
+                } catch (error) {
+                    console.log(backendError);
+                    dispatch(handleLoading(false));
+                }
             },
         });
+
     return (
         <AuthLayout>
             <Grid2 size={{ xs: 12, md: 6 }}>
@@ -61,8 +77,8 @@ function Register() {
                             color={greyCloud}
                         >
                             By creating an account or signing in, you understand
-                            and agree to Indeed's Terms. You also acknowledge
-                            our Cookie and Privacy policies.
+                            and agree to our Terms. You also acknowledge our
+                            Cookie and Privacy policies.
                         </Typography>
                     </Box>
                     <Box component="form" onSubmit={handleSubmit}>
@@ -73,21 +89,13 @@ function Register() {
                                     label="Name"
                                     type="text"
                                     aria-label="Name"
-                                    autoComplete="Name"
                                     name="name"
                                     onChange={handleChange}
                                     value={values.name}
                                     onBlur={handleBlur}
+                                    error={touched.name && Boolean(errors.name)}
+                                    helperText={touched.name && errors.name}
                                 />
-                                {errors.name && touched.name ? (
-                                    <Typography
-                                        color="error"
-                                        variant="body1"
-                                        component="span"
-                                    >
-                                        {errors.name}
-                                    </Typography>
-                                ) : null}
                             </FormControl>
                         </FormGroup>
                         <FormGroup>
@@ -97,21 +105,15 @@ function Register() {
                                     label="Email"
                                     type="email"
                                     aria-label="Email"
-                                    autoComplete="Email"
                                     name="email"
                                     onChange={handleChange}
                                     value={values.email}
                                     onBlur={handleBlur}
+                                    error={
+                                        touched.email && Boolean(errors.email)
+                                    }
+                                    helperText={touched.email && errors.email}
                                 />
-                                {errors.email && touched.email ? (
-                                    <Typography
-                                        color="error"
-                                        variant="body1"
-                                        component="span"
-                                    >
-                                        {errors.email}
-                                    </Typography>
-                                ) : null}
                             </FormControl>
                         </FormGroup>
                         <FormGroup>
@@ -121,11 +123,17 @@ function Register() {
                                     label="Password"
                                     type={!showPassword ? "password" : "text"}
                                     aria-label="Password"
-                                    autoComplete="password"
                                     name="password"
                                     onChange={handleChange}
                                     value={values.password}
                                     onBlur={handleBlur}
+                                    error={
+                                        touched.password &&
+                                        Boolean(errors.password)
+                                    }
+                                    helperText={
+                                        touched.password && errors.password
+                                    }
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -148,15 +156,6 @@ function Register() {
                                         ),
                                     }}
                                 />
-                                {errors.password && touched.password ? (
-                                    <Typography
-                                        color="error"
-                                        variant="body1"
-                                        component="span"
-                                    >
-                                        {errors.password}
-                                    </Typography>
-                                ) : null}
                             </FormControl>
                         </FormGroup>
                         <FormGroup>
@@ -166,45 +165,37 @@ function Register() {
                                     label="Confirm Password"
                                     type={!showPassword ? "password" : "text"}
                                     aria-label="Confirm Password"
-                                    autoComplete="Confirm Password"
                                     name="password_confirmation"
                                     onChange={handleChange}
                                     value={values.password_confirmation}
                                     onBlur={handleBlur}
+                                    error={
+                                        touched.password_confirmation &&
+                                        Boolean(errors.password_confirmation)
+                                    }
+                                    helperText={
+                                        touched.password_confirmation &&
+                                        errors.password_confirmation
+                                    }
                                 />
-                                {errors.password_confirmation &&
-                                touched.password_confirmation ? (
-                                    <Typography
-                                        color="error"
-                                        variant="body1"
-                                        component="span"
-                                    >
-                                        {errors.password_confirmation}
-                                    </Typography>
-                                ) : null}
                             </FormControl>
                         </FormGroup>
-                        <Button
+                        <LoadingButton
                             type="submit"
+                            loading={isLoading}
+                            loadingPosition="center"
                             variant="contained"
                             sx={{ paddingY: "0.6rem", minWidth: "100%", mt: 2 }}
                             aria-label="Register"
                         >
                             Register
-                        </Button>
+                        </LoadingButton>
                     </Box>
                     <Box mt={2} textAlign="center" color={primary}>
-                        <Typography
-                            color={black}
-                            component="span"
-                            aria-label="Already have an account?"
-                        >
+                        <Typography color={black} component="span">
                             Already have an account?
                             <Link href="/login">
-                                <Typography
-                                    component="span"
-                                    aria-label="Sign In"
-                                >
+                                <Typography component="span">
                                     Sign In
                                 </Typography>
                             </Link>

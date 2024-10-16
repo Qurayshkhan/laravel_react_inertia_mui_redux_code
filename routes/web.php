@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,3 +18,6 @@ use Inertia\Inertia;
 // Route::get('/login', function () {
 //     return Inertia::render('Auth/Login');
 // });
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [HomeController::class, 'home'])->name('user.dashboard');
+});
