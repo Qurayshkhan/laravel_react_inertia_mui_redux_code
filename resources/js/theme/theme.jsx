@@ -6,6 +6,14 @@ import { createTheme } from "@mui/material/styles";
 export const primary = "#6c63ff";
 export const black = "#212529";
 export const greyCloud = "#b3b3b3";
+export const white = "#fff";
+export const clrPrimary = "#29221d";
+export const clrPumpkin = "#fe6c00";
+
+// transaction
+export const transitionDefault = "all 300ms ease-in-out";
+export const infoImgBoxShadow = "rgba(0, 0, 0, 0.35) 0px 5px 15px";
+
 const theme = createTheme({
     cssVariables: true,
     typography: {
@@ -22,6 +30,9 @@ const theme = createTheme({
             primary,
             black,
             greyCloud,
+            white,
+            clrPrimary,
+            clrPumpkin,
         },
     },
 });

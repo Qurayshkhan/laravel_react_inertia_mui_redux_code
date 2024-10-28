@@ -24,9 +24,8 @@ import {
 import { useFormik } from "formik";
 import { RegisterSchema } from "../../schemas/AuthSchema";
 
-function Register() {
+function Register(props) {
     const { errors: backendError } = usePage().props;
-
     const { black, greyCloud } = useCustomColors();
     const { showPassword, registerUser, isLoading } = useSelectorHook("auth");
     const dispatch = useDispatch();
@@ -85,7 +84,6 @@ function Register() {
                         <FormGroup>
                             <FormControl>
                                 <TextField
-                                    required
                                     label="Name"
                                     type="text"
                                     aria-label="Name"
@@ -96,12 +94,18 @@ function Register() {
                                     error={touched.name && Boolean(errors.name)}
                                     helperText={touched.name && errors.name}
                                 />
+                                <Typography
+                                    component="span"
+                                    color="error"
+                                    variant="body1"
+                                >
+                                    {backendError.name}
+                                </Typography>
                             </FormControl>
                         </FormGroup>
                         <FormGroup>
                             <FormControl sx={{ mt: 2 }}>
                                 <TextField
-                                    required
                                     label="Email"
                                     type="email"
                                     aria-label="Email"
@@ -114,12 +118,18 @@ function Register() {
                                     }
                                     helperText={touched.email && errors.email}
                                 />
+                                <Typography
+                                    component="span"
+                                    color="error"
+                                    variant="body1"
+                                >
+                                    {backendError.email}
+                                </Typography>
                             </FormControl>
                         </FormGroup>
                         <FormGroup>
                             <FormControl sx={{ mt: 2 }}>
                                 <TextField
-                                    required
                                     label="Password"
                                     type={!showPassword ? "password" : "text"}
                                     aria-label="Password"
@@ -156,12 +166,18 @@ function Register() {
                                         ),
                                     }}
                                 />
+                                <Typography
+                                    component="span"
+                                    color="error"
+                                    variant="body1"
+                                >
+                                    {backendError.password}
+                                </Typography>
                             </FormControl>
                         </FormGroup>
                         <FormGroup>
                             <FormControl sx={{ mt: 2 }}>
                                 <TextField
-                                    required
                                     label="Confirm Password"
                                     type={!showPassword ? "password" : "text"}
                                     aria-label="Confirm Password"
@@ -178,6 +194,13 @@ function Register() {
                                         errors.password_confirmation
                                     }
                                 />
+                                <Typography
+                                    component="span"
+                                    color="error"
+                                    variant="body1"
+                                >
+                                    {backendError.password_confirmation}
+                                </Typography>
                             </FormControl>
                         </FormGroup>
                         <LoadingButton

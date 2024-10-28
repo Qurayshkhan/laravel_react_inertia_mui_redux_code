@@ -9,6 +9,14 @@ const AuthState = {
         password: "",
         password_confirmation: "",
     },
+    login: {
+        email: "",
+        password: "",
+    },
+    toaster: {
+        isShowToaster: false,
+        message: "Hello world",
+    },
 };
 
 export default AuthState;

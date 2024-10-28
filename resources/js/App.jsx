@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import theme from "./theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
-
 const appName = import.meta.env.VITE_APP_NAME || "CODE APP";
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

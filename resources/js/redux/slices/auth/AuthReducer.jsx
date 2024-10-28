@@ -10,6 +10,13 @@ const AuthReducer = {
 
         state.isLoading = action.payload;
     },
+    handleCloseToaster(state, action) {
+        state.toaster.isShowToaster = false;
+    },
+    handleShowToaster(state, action) {
+        state.toaster.isShowToaster = true;
+        state.toaster.message = action.payload;
+    },
 };
 
 export default AuthReducer;

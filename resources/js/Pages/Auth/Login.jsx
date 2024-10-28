@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Box,
     FormControl,
@@ -16,18 +16,43 @@ import InputAdornment from "@mui/material/InputAdornment";
 import useCustomColors from "../../hooks/useCustomColor";
 import AuthLayout from "../../Layouts/Auth/AuthLayout";
 import { primary } from "../../theme/theme";
-import { Link } from "@inertiajs/react";
+import { Link, router, useForm, usePage } from "@inertiajs/react";
 import {
     handleCheckBox,
+    handleLoading,
+    handleShowToaster,
     showHidePassword,
 } from "../../redux/slices/auth/AuthSlice";
 import { useDispatch } from "react-redux";
 import useSelectorHook from "../../hooks/useSelectorHook";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-function Login() {
-    const { checked, showPassword } = useSelectorHook("auth");
+import { LoadingButton } from "@mui/lab";
+import { useFormik } from "formik";
+import { LoginSchema } from "../../schemas/AuthSchema";
+function Login(props) {
+    const { errors: backendError, alert } = usePage().props;
+    const { checked, showPassword, login, isLoading } = useSelectorHook("auth");
     const dispatch = useDispatch();
     const { black, greyCloud } = useCustomColors();
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+        useFormik({
+            initialValues: login,
+            validationSchema: LoginSchema,
+            onSubmit: (values, actions) => {
+                dispatch(handleLoading(true));
+                router.post(route("loginStore"), values, {
+                    onSuccess: () => {
+                        actions.resetForm();
+                    },
+                    onError: (errors) => {
+                        dispatch(handleShowToaster(errors.alert));
+                    },
+                    onFinish: () => {
+                        dispatch(handleLoading(false));
+                    },
+                });
+            },
+        });
     return (
         <AuthLayout>
             <Grid2 size={{ xs: 12, md: 6 }}>
@@ -59,26 +84,47 @@ function Login() {
                             our Cookie and Privacy policies.
                         </Typography>
                     </Box>
-                    <Box component="form">
+                    <Box component="form" onSubmit={handleSubmit}>
                         <FormGroup>
                             <FormControl>
                                 <TextField
-                                    required
                                     label="Email"
                                     type="email"
                                     aria-label="Email"
                                     autoComplete="Email"
+                                    name="email"
+                                    onChange={handleChange}
+                                    value={values.email}
+                                    onBlur={handleBlur}
+                                    error={
+                                        touched.email && Boolean(errors.email)
+                                    }
+                                    helperText={touched.email && errors.email}
                                 />
+                                <Typography component="span" color="error">
+                                    {backendError.email}
+                                </Typography>
                             </FormControl>
                         </FormGroup>
                         <FormGroup>
                             <FormControl sx={{ mt: 2 }}>
                                 <TextField
-                                    required
+                                    // required
                                     label="Password"
                                     type={!showPassword ? "password" : "text"}
                                     aria-label="Password"
                                     autoComplete="password"
+                                    name="password"
+                                    onChange={handleChange}
+                                    value={values.password}
+                                    onBlur={handleBlur}
+                                    error={
+                                        touched.password &&
+                                        Boolean(errors.password)
+                                    }
+                                    helperText={
+                                        touched.password && errors.password
+                                    }
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -101,6 +147,9 @@ function Login() {
                                         ),
                                     }}
                                 />
+                                <Typography component="span" color="error">
+                                    {backendError.password}
+                                </Typography>
                             </FormControl>
                         </FormGroup>
 
@@ -130,13 +179,15 @@ function Login() {
                                 Forgot Password
                             </Box>
                         </Box>
-                        <Button
+                        <LoadingButton
+                            type="submit"
                             variant="contained"
                             sx={{ paddingY: "0.6rem", minWidth: "100%" }}
                             aria-label="Login"
+                            loading={isLoading}
                         >
                             Login
-                        </Button>
+                        </LoadingButton>
                     </Box>
                     <Box mt={2} textAlign="center" color={primary}>
                         <Typography

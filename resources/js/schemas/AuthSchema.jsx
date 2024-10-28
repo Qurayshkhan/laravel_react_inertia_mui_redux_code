@@ -10,3 +10,8 @@ export const RegisterSchema = Yup.object({
             "Confirmation password must be match with password"
         ),
 });
+
+export const LoginSchema = Yup.object({
+    email: Yup.string().email().required(),
+    password: Yup.string().required(),
+});

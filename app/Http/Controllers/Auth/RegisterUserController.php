@@ -35,7 +35,7 @@ class RegisterUserController extends Controller
                 'type' => User::TYPE_USER,
             ]);
             Auth::login(user: $user, remember: true);
-            return Redirect::intended(RouteServiceProvider::USER_DASHBOARD);
+            return Redirect::intended(RouteServiceProvider::HOME);
         } catch (\Exception $e) {
             return Redirect::back()->with('error', $e->getMessage());
         }

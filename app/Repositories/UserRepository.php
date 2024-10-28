@@ -25,7 +25,7 @@ class UserRepository implements UserInterface
      * @param string $email
      * @return User|null
      */
-    public function getUserByEmail(string $email): ?User
+    public function findByEmail(string $email): ?User
     {
         return $this->user->where("email", $email)->first();
     }
