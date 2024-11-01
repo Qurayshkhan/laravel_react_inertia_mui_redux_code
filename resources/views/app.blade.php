@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html class="h-full bg-gray-200">
+<html class="h-full">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     @routes
+    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     @inertiaHead
     @viteReactRefresh
-    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
 </head>
 
-<body class="font-sans antialiased leading-none text-gray-800">
+<body>
     @inertia
 </body>
 

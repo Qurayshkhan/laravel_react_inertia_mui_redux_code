@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AuthReducer from "./AuthReducer";
 import AuthStates from "./AuthStates";
+import { router } from "@inertiajs/react";
 
 export const AuthSlice = createSlice({
     name: "auth",

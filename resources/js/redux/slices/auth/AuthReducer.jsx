@@ -6,8 +6,6 @@ const AuthReducer = {
         state.checked = !state.checked;
     },
     handleLoading(state, action) {
-        console.log("🚀 ~ handleLoading ~ payload:", action.payload);
-
         state.isLoading = action.payload;
     },
     handleCloseToaster(state, action) {

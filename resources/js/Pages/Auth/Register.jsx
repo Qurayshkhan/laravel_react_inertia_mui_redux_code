@@ -10,19 +10,19 @@ import {
     IconButton,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import useCustomColors from "../../hooks/useCustomColor";
+import useCustomColors from "../../CustomHooks/useCustomColor";
 import AuthLayout from "../../Layouts/Auth/AuthLayout";
-import { primary } from "../../theme/theme";
+import { primary } from "../../Theme/Theme";
 import { Link, router, usePage } from "@inertiajs/react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import useSelectorHook from "../../hooks/useSelectorHook";
+import useSelectorHook from "../../CustomHooks/useSelectorHook";
 import { useDispatch } from "react-redux";
 import {
     handleLoading,
     showHidePassword,
-} from "../../redux/slices/auth/AuthSlice";
+} from "../../Redux/Slices/Auth/AuthSlice";
 import { useFormik } from "formik";
-import { RegisterSchema } from "../../schemas/AuthSchema";
+import { RegisterSchema } from "../../Schemas/AuthSchema";
 
 function Register(props) {
     const { errors: backendError } = usePage().props;

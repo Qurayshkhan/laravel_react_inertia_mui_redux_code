@@ -1,8 +1,8 @@
 import { Alert, Box, Container, Grid2, Snackbar } from "@mui/material";
 import React from "react";
-import useSelectorHook from "../../hooks/useSelectorHook";
+import useSelectorHook from "../../CustomHooks/useSelectorHook";
 import { useDispatch } from "react-redux";
-import { handleCloseToaster } from "../../redux/slices/auth/AuthSlice";
+import { handleCloseToaster } from "../../Redux/Slices/Auth/AuthSlice";
 function AuthLayout({ children }) {
     const dispatch = useDispatch();
     const {
@@ -15,6 +15,7 @@ function AuthLayout({ children }) {
                 height: "100vh",
                 padding: { xs: "1rem", md: "3rem" },
             }}
+            className="bg-white"
         >
             <Snackbar
                 open={isShowToaster}

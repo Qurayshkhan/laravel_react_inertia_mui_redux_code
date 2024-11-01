@@ -13,22 +13,22 @@ import {
 } from "@mui/material";
 
 import InputAdornment from "@mui/material/InputAdornment";
-import useCustomColors from "../../hooks/useCustomColor";
-import AuthLayout from "../../Layouts/Auth/AuthLayout";
-import { primary } from "../../theme/theme";
+import useCustomColors from "@js/CustomHooks/useCustomColor";
+import AuthLayout from "@js/Layouts/Auth/AuthLayout";
+import { primary } from "@js/Theme/Theme";
 import { Link, router, useForm, usePage } from "@inertiajs/react";
 import {
     handleCheckBox,
     handleLoading,
     handleShowToaster,
     showHidePassword,
-} from "../../redux/slices/auth/AuthSlice";
+} from "@js/Redux/Slices/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
-import useSelectorHook from "../../hooks/useSelectorHook";
+import useSelectorHook from "@js/CustomHooks/useSelectorHook";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { useFormik } from "formik";
-import { LoginSchema } from "../../schemas/AuthSchema";
+import { LoginSchema } from "@js/Schemas/AuthSchema";
 function Login(props) {
     const { errors: backendError, alert } = usePage().props;
     const { checked, showPassword, login, isLoading } = useSelectorHook("auth");
